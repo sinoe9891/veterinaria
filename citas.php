@@ -29,7 +29,7 @@ include 'includes/templates/sidebar.php';
 				</div>
 			</div>
 		</div>
-		<section class="section pacientes">
+		<section class="section cita">
 			<div class="card">
 				<div class="card-body">
 					<div>
@@ -49,7 +49,7 @@ include 'includes/templates/sidebar.php';
 								<th>Cirugia</th>
 								<th>Médico</th>
 								<th>Fecha en que Programó</th>
-								<th>Usuario</th>
+								<th>Cliente</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>
@@ -69,14 +69,14 @@ include 'includes/templates/sidebar.php';
 									<td><?php echo $numero++ ?></td>
 									<td><?php echo $row['FECHA_CITA'] ?></td>
 									<td><?php echo $fecha_inicial ?></td>
-									<td><?php echo $row['COD_PACIENTE'] ?></td>
+									<td><?php echo $row['NOMBRE_PACIENTE'] ?></td>
 									<td><?php echo $row['DESCRIPCION'] ?></td>
-									<td><?php echo $row['COD_CIRUGIA'] ?></td>
-									<td><?php echo $row['ID_MEDICO'] ?></td>
+									<td><?php echo $row['NOMBRE_CIRUGIA'] ?></td>
+									<td><?php echo $row['NOMBRE_COMPLETO'] ?></td>
 									<td><?php echo $row['FECHA_PROGRAMO'] ?></td>
 									<td><?php echo $row['USUARIO'] ?></td>
 									<td>
-										<a href="edit-paciente.php?ID=<?php echo $row['COD_PACIENTE'] ?>" target="_self"><span class="badge bg-primary">Editar</span></a>
+										<a href="edit-cita.php?ID=<?php echo $row['NUM_CITA'] ?>" target="_self"><span class="badge bg-primary">Editar</span></a>
 										<i class="fas fa-trash"></i>
 									</td>
 								</tr>

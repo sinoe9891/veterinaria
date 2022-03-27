@@ -49,7 +49,32 @@ function addEventListener() {
 			}
 		});
 	}
+
+	let solicitudCita = document.querySelector('.cita');
+	if (solicitudCita) {
+		modelo = 'model-acciones';
+		eliminar = 'eliminar-cita';
+		solicitudCita.addEventListener('click', (event) => {
+			if (event.isTrusted) { // Valida que el evento es desencadenado por una acción manual del cliente
+				acciones(event,modelo,eliminar);
+			}
+		});
+	}
+
+	let solicitudEmfermedad = document.querySelector('.enfermedad');
+	if (solicitudEmfermedad) {
+		modelo = 'model-acciones';
+		eliminar = 'eliminar-enfermedad';
+		solicitudEmfermedad.addEventListener('click', (event) => {
+			if (event.isTrusted) { // Valida que el evento es desencadenado por una acción manual del cliente
+				acciones(event,modelo,eliminar);
+			}
+		});
+	}
 	
+
+
+
 	let fichaGraduado = document.querySelector('.caja-ficha');
 	if (fichaGraduado) {
 		modeloFicha = 'model-acciones-ficha';
@@ -261,8 +286,6 @@ function eliminarRegistro(solicitudEliminar, estado, model, eliminar) {
 	datos.append('id', idSolicitud[1]);
 	datos.append('accion', eliminar);
 	datos.append('estado', estado);
-	console.log(estado)
-	console.log(eliminar);
 	if(document.getElementById('nombre')){
 		let nombre = document.getElementById('nombre').value;
 		let procesado = nombre.replace(/\s+/g, '');

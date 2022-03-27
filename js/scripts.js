@@ -27,7 +27,19 @@ function addEventListener() {
 	if (editarCirug) {
 		editarCirug.addEventListener('submit', editarCirugia);
 	}
-	//Nuevo Registgro
+	let editarCita = document.querySelector('#editarCita');
+	if (editarCita) {
+		editarCita.addEventListener('submit', editarCit);
+	}
+	let editarEnfermedad = document.querySelector('#editarEnfermedad');
+	if (editarEnfermedad) {
+		editarEnfermedad.addEventListener('submit', editarEnfer);
+	}
+	let editarTurno = document.querySelector('#editarTurno');
+	if (editarTurno) {
+		editarTurno.addEventListener('submit', editarTurn);
+	}
+	//Nuevos Registgro
 	let nuevoPaciente = document.querySelector('#nuevoPaciente');
 	if (nuevoPaciente) {
 		nuevoPaciente.addEventListener('submit', nuevoPaci);
@@ -43,6 +55,18 @@ function addEventListener() {
 	let nuevoCiru = document.querySelector('#nuevaCirugia');
 	if (nuevoCiru) {
 		nuevoCiru.addEventListener('submit', nuevoCirug);
+	}
+	let nuevoCita = document.querySelector('#nuevaCita');
+	if (nuevoCita) {
+		nuevoCita.addEventListener('submit', nuevaCita);
+	}
+	let nuevoEnfermed = document.querySelector('#nuevoEnfermedad');
+	if (nuevoEnfermed) {
+		nuevoEnfermed.addEventListener('submit', nuevoEnfermedad);
+	}
+	let nuevoTurno = document.querySelector('#nuevoTurno');
+	if (nuevoTurno) {
+		nuevoTurno.addEventListener('submit', nuevoTurn);
 	}
 
 
@@ -333,7 +357,7 @@ function nuevoCirug(e) {
 						}).then(function () {
 							window.location = "cirugias.php";
 						});;
-					} 
+					}
 				} else {
 					Swal.fire({
 						icon: 'error',
@@ -353,6 +377,165 @@ function nuevoCirug(e) {
 		});
 	}
 }
+function nuevoTurn(e) {
+	e.preventDefault();
+	let cod_turno = document.querySelector('#cod_turno').value,
+		medico = document.querySelector('#medico').value,
+		fecha_turno = document.querySelector('#fecha_turno').value,
+		tipo = document.querySelector('#tipo').value;
+
+	if (cod_turno == '' || medico === '' || fecha_turno === '') {
+		//validación Falló
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'Debe de llenar los campos obligatorios',
+		});
+	} else if (cod_turno != '' || medico != '' || fecha_turno != '') {
+		//Campos son correctos - Ejecutamos AJAX
+		//Crear  FormData - Datos que se envían al servidor
+		console.log('enviar');
+		let datos = new FormData();
+		datos.append('cod_turno', cod_turno);
+		datos.append('medico', medico);
+		datos.append('fecha_turno', fecha_turno);
+		datos.append('accion', tipo);
+		//Crear  el llamado a Ajax
+		let xhr = new XMLHttpRequest();
+		//Abrir la Conexión
+		xhr.open('POST', 'includes/models/model-nuevo.php', true);
+
+		//Retorno de Datos
+		xhr.onload = function () {
+			if (this.status === 200) {
+				//esta es la respuesta la que tenemos en el model
+				// let respuesta = xhr.responseText;
+				let respuesta = JSON.parse(xhr.responseText);
+				let urlactual = filename()
+				console.log(respuesta);
+				// console.log(respuesta.respuesta);
+				// console.log(respuesta.respuesta);
+				if (respuesta.respuesta === 'correcto') {
+					//si es un nuevo usuario 
+					if (respuesta.tipo == 'nuevoTurno' && urlactual == 'new-turno.php') {
+						Swal.fire({
+							icon: 'success',
+							title: '¡Solicitud realizada!',
+							text: 'Se verificarán los datos y se aprobará la actualización',
+							position: 'center',
+							showConfirmButton: true
+
+						}).then(function () {
+							window.location = "turnos.php";
+						});;
+					}
+				} else {
+					Swal.fire({
+						icon: 'error',
+						title: 'Oops...',
+						text: 'Hubo un error en la solicitud'
+					})
+				}
+			}
+		}
+		// Enviar la petición
+		xhr.send(datos);
+	} else {
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'ID Invalido Cliente y Beneficiario (13 digitos más guiones) '
+		});
+	}
+}
+
+function nuevaCita(e) {
+	e.preventDefault();
+
+	let tipo = document.querySelector('#tipo').value,
+		id_cita = document.querySelector('#id_cita').value,
+		fecha_cita = document.querySelector('#fecha_cita').value,
+		hora_cita = document.querySelector('#hora_cita').value,
+		paciente = document.querySelector('#paciente').value,
+		cirugia = document.querySelector('#cirugia').value,
+		medico = document.querySelector('#medico').value,
+		fechaprogramo = document.querySelector('#fechaprogramo').value,
+		dueno = document.querySelector('#dueno').value,
+		descripcion = document.querySelector('#descripcion').value;
+
+
+
+	if (id_cita === '' || fecha_cita === '' || hora_cita === '' || paciente === '' || cirugia === '' || medico === '' || fechaprogramo === '' || dueno === '' || descripcion === '') {
+		//validación Falló
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'Debe de llenar los campos obligatorios',
+		});
+	} else if (id_cita != '' || fecha_cita != '' || hora_cita != '' || paciente != '' || cirugia != '' || medico != '' || fechaprogramo != '' || dueno != '' || descripcion != '') {
+		//Campos son correctos - Ejecutamos AJAX
+		//Crear  FormData - Datos que se envían al servidor
+		console.log('enviar');
+		let datos = new FormData();
+		datos.append('id_cita', id_cita);
+		datos.append('fecha_cita', fecha_cita);
+		datos.append('hora_cita', hora_cita);
+		datos.append('paciente', paciente);
+		datos.append('cirugia', cirugia);
+		datos.append('medico', medico);
+		datos.append('fechaprogramo', fechaprogramo);
+		datos.append('dueno', dueno);
+		datos.append('descripcion', descripcion);
+		datos.append('accion', tipo);
+		//Crear  el llamado a Ajax
+		let xhr = new XMLHttpRequest();
+		//Abrir la Conexión
+		xhr.open('POST', 'includes/models/model-nuevo.php', true);
+
+		//Retorno de Datos
+		xhr.onload = function () {
+			if (this.status === 200) {
+				//esta es la respuesta la que tenemos en el model
+				// let respuesta = xhr.responseText;
+				let respuesta = JSON.parse(xhr.responseText);
+				let urlactual = filename()
+				console.log(respuesta);
+				// console.log(respuesta.respuesta);
+				// console.log(respuesta.respuesta);
+				if (respuesta.respuesta === 'correcto') {
+					//si es un nuevo usuario 
+					if (respuesta.tipo == 'nuevaCita' && urlactual == 'new-cita.php') {
+						Swal.fire({
+							icon: 'success',
+							title: '¡Solicitud realizada!',
+							text: 'Se verificarán los datos y se aprobará la actualización',
+							position: 'center',
+							showConfirmButton: true
+
+						}).then(function () {
+							window.location = "citas.php";
+						});;
+					}
+				} else {
+					Swal.fire({
+						icon: 'error',
+						title: 'Oops...',
+						text: 'Hubo un error en la solicitud'
+					})
+				}
+			}
+		}
+		// Enviar la petición
+		xhr.send(datos);
+	} else {
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'ID Invalido Cliente y Beneficiario (13 digitos más guiones) '
+		});
+	}
+}
+
 function nuevoMed(e) {
 	e.preventDefault();
 
@@ -442,6 +625,90 @@ function nuevoMed(e) {
 		});
 	}
 }
+function nuevoEnfermedad(e) {
+	e.preventDefault();
+
+	let codigoenfermedad = document.querySelector('#codigoenfermedad').value,
+		nombre_completo = document.querySelector('#nombre_completo').value,
+		medicina = document.querySelector('#medicina').value,
+		descripcion = document.querySelector('#descripcion').value,
+		tipo = document.querySelector('#tipo').value;
+
+	if (codigoenfermedad == '' || nombre_completo === '' || medicina === '' || descripcion === '') {
+		//validación Falló
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'Debe de llenar los campos obligatorios',
+		});
+	} else if (codigoenfermedad != '' || nombre_completo != '' || medicina != '' || descripcion != '') {
+		//Campos son correctos - Ejecutamos AJAX
+		//Crear  FormData - Datos que se envían al servidor
+		console.log('enviar');
+		let datos = new FormData();
+		datos.append('codigoenfermedad', codigoenfermedad);
+		datos.append('nombre_completo', nombre_completo);
+		datos.append('medicina', medicina);
+		datos.append('descripcion', descripcion);
+		datos.append('accion', tipo);
+		//Crear  el llamado a Ajax
+		let xhr = new XMLHttpRequest();
+		//Abrir la Conexión
+		xhr.open('POST', 'includes/models/model-nuevo.php', true);
+
+		//Retorno de Datos
+		xhr.onload = function () {
+			if (this.status === 200) {
+				//esta es la respuesta la que tenemos en el model
+				// let respuesta = xhr.responseText;
+				let respuesta = JSON.parse(xhr.responseText);
+				let urlactual = filename()
+				console.log(respuesta);
+				// console.log(respuesta.respuesta);
+				// console.log(respuesta.respuesta);
+				if (respuesta.respuesta === 'correcto') {
+					//si es un nuevo usuario 
+					if (respuesta.tipo == 'solicitudEnfermedad' && urlactual == 'new-enfermedad.php') {
+						Swal.fire({
+							icon: 'success',
+							title: '¡Solicitud realizada!',
+							text: 'Se verificarán los datos y se aprobará la actualización',
+							position: 'center',
+							showConfirmButton: true
+
+						}).then(function () {
+							window.location = "enfermedades.php";
+						});;
+					} else if (respuesta.tipo == 'solicitud' && urlactual == 'precontrato.php') {
+						Swal.fire({
+							icon: 'success',
+							title: '¡Precontrato Enviado!',
+							text: 'Se verificarán los datos y se contactarán con usted',
+							position: 'center',
+							showConfirmButton: true
+						}).then(function () {
+							window.location.reload();
+						});;
+					}
+				} else {
+					Swal.fire({
+						icon: 'error',
+						title: 'Oops...',
+						text: 'Hubo un error en la solicitud'
+					})
+				}
+			}
+		}
+		// Enviar la petición
+		xhr.send(datos);
+	} else {
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'ID Invalido Cliente y Beneficiario (13 digitos más guiones) '
+		});
+	}
+}
 
 function nuevoDuen(e) {
 	e.preventDefault();
@@ -450,6 +717,7 @@ function nuevoDuen(e) {
 		nombre_completo = document.querySelector('#nombre_completo').value,
 		direcciondueno = document.querySelector('#direcciondueno').value,
 		telefonos = document.querySelector('#telefonos').value,
+		telefono1 = document.querySelector('#telefono1').value,
 		tipo = document.querySelector('#tipo').value;
 
 	if (nombre_completo === '' || telefonos === '' || direcciondueno === '' && codigoDueno === '') {
@@ -468,6 +736,7 @@ function nuevoDuen(e) {
 		datos.append('nombre_completo', nombre_completo);
 		datos.append('direcciondueno', direcciondueno);
 		datos.append('telefonos', telefonos);
+		datos.append('telefono1', telefono1);
 		datos.append('accion', tipo);
 		//Crear  el llamado a Ajax
 		let xhr = new XMLHttpRequest();
@@ -1337,7 +1606,201 @@ function editarCirugia(e) {
 	xhr.send(datos);
 
 }
+function editarCit(e) {
+	e.preventDefault();
+	console.log('EditarCit');
+	let id_cita = document.querySelector('#id_cita').value,
+		tipo = document.querySelector('#tipo').value,
+		hora_cita = document.querySelector('#hora_cita').value,
+		fecha_cita = document.querySelector('#fecha_cita').value,
+		paciente = document.querySelector('#paciente').value,
+		cirugia = document.querySelector('#cirugia').value,
+		medico = document.querySelector('#medico').value,
+		fechaprogramo = document.querySelector('#fechaprogramo').value,
+		dueno = document.querySelector('#dueno').value,
+		descripcion = document.querySelector('#descripcion').value;
 
+	let datos = new FormData();
+	datos.append('id_cita', id_cita);
+	datos.append('hora_cita', hora_cita);
+	datos.append('fecha_cita', fecha_cita);
+	datos.append('paciente', paciente);
+	datos.append('cirugia', cirugia);
+	datos.append('medico', medico);
+	datos.append('fechaprogramo', fechaprogramo);
+	datos.append('dueno', dueno);
+	datos.append('descripcion', descripcion);
+	datos.append('accion', tipo);
+	//Crear  el llamado a Ajax
+	let xhr = new XMLHttpRequest();
+	//Abrir la Conexión
+	xhr.open('POST', 'includes/models/model-editar-registro.php', true);
+
+	//Retorno de Datos
+	xhr.onload = function () {
+		if (this.status === 200) {
+
+			//esta es la respuesta la que tenemos en el model
+			// let respuesta = xhr.responseText;
+			let respuesta = JSON.parse(xhr.responseText);
+			console.log(respuesta);
+			if (respuesta.respuesta === 'correcto') {
+				//si es un nuevo usuario 
+				if (respuesta.tipo == 'editarCita') {
+					Swal.fire({
+						icon: 'success',
+						title: '¡Registro Actualizado!',
+						text: 'Esta solicitud se ha realizado con éxito',
+						position: 'center',
+						showConfirmButton: true
+					}).then(function () {
+						// url = '?nombres=' + nombres + '&identidad=' + identidad;
+						window.location = "citas.php";
+					});
+				}
+			} else {
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: 'Hubo un error en la solicitud'
+				})
+			}
+		}
+	}
+	// Enviar la petición
+	xhr.send(datos);
+
+}
+function editarEnfer(e) {
+	e.preventDefault();
+	let codigoenfermedad = document.querySelector('#codigoenfermedad').value,
+		nombre_completo = document.querySelector('#nombre_completo').value,
+		medicina = document.querySelector('#medicina').value,
+		descripcion = document.querySelector('#descripcion').value,
+		tipo = document.querySelector('#tipo').value;
+
+	if (codigoenfermedad == '' || nombre_completo === '' || medicina === '' || descripcion === '') {
+		//validación Falló
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'Debe de llenar los campos obligatorios',
+		});
+	} else if (codigoenfermedad != '' || nombre_completo != '' || medicina != '' || descripcion != '') {
+		//Campos son correctos - Ejecutamos AJAX
+		//Crear  FormData - Datos que se envían al servidor
+		console.log('enviar');
+		let datos = new FormData();
+		datos.append('codigoenfermedad', codigoenfermedad);
+		datos.append('nombre_completo', nombre_completo);
+		datos.append('medicina', medicina);
+		datos.append('descripcion', descripcion);
+		datos.append('accion', tipo);
+		//Crear  el llamado a Ajax
+		let xhr = new XMLHttpRequest();
+		//Abrir la Conexión
+		xhr.open('POST', 'includes/models/model-editar-registro.php', true);
+
+		//Retorno de Datos
+		xhr.onload = function () {
+			if (this.status === 200) {
+
+				//esta es la respuesta la que tenemos en el model
+				// let respuesta = xhr.responseText;
+				let respuesta = JSON.parse(xhr.responseText);
+				console.log(respuesta);
+				if (respuesta.respuesta === 'correcto') {
+					//si es un nuevo usuario 
+					if (respuesta.tipo == 'editarEnfermedad') {
+						Swal.fire({
+							icon: 'success',
+							title: '¡Registro Actualizado!',
+							text: 'Esta solicitud se ha realizado con éxito',
+							position: 'center',
+							showConfirmButton: true
+						}).then(function () {
+							// url = '?nombres=' + nombres + '&identidad=' + identidad;
+							window.location = "enfermedades.php";
+						});
+					}
+				} else {
+					Swal.fire({
+						icon: 'error',
+						title: 'Oops...',
+						text: 'Hubo un error en la solicitud'
+					})
+				}
+			}
+		}
+		// Enviar la petición
+		xhr.send(datos);
+
+	}
+}
+function editarTurn(e) {
+	e.preventDefault();
+	let cod_turno = document.querySelector('#cod_turno').value,
+		medico = document.querySelector('#medico').value,
+		fecha_turno = document.querySelector('#fecha_turno').value,
+		tipo = document.querySelector('#tipo').value;
+
+	if (cod_turno == '' || medico === '' || fecha_turno === '') {
+		//validación Falló
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'Debe de llenar los campos obligatorios',
+		});
+	} else if (cod_turno != '' || medico != '' || fecha_turno != '') {
+		//Campos son correctos - Ejecutamos AJAX
+		//Crear  FormData - Datos que se envían al servidor
+		console.log('enviar');
+		let datos = new FormData();
+		datos.append('cod_turno', cod_turno);
+		datos.append('medico', medico);
+		datos.append('fecha_turno', fecha_turno);
+		datos.append('accion', tipo);
+		//Crear  el llamado a Ajax
+		let xhr = new XMLHttpRequest();
+		//Abrir la Conexión
+		xhr.open('POST', 'includes/models/model-editar-registro.php', true);
+
+		//Retorno de Datos
+		xhr.onload = function () {
+			if (this.status === 200) {
+
+				//esta es la respuesta la que tenemos en el model
+				// let respuesta = xhr.responseText;
+				let respuesta = JSON.parse(xhr.responseText);
+				console.log(respuesta);
+				if (respuesta.respuesta === 'correcto') {
+					//si es un nuevo usuario 
+					if (respuesta.tipo == 'editarTurno') {
+						Swal.fire({
+							icon: 'success',
+							title: '¡Registro Actualizado!',
+							text: 'Esta solicitud se ha realizado con éxito',
+							position: 'center',
+							showConfirmButton: true
+						}).then(function () {
+							// url = '?nombres=' + nombres + '&identidad=' + identidad;
+							window.location = "turnos.php";
+						});
+					}
+				} else {
+					Swal.fire({
+						icon: 'error',
+						title: 'Oops...',
+						text: 'Hubo un error en la solicitud'
+					})
+				}
+			}
+		}
+		// Enviar la petición
+		xhr.send(datos);
+
+	}
+}
 
 
 

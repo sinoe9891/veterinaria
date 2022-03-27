@@ -233,8 +233,8 @@ include 'includes/templates/sidebar.php';
 								<img src="assets/images/faces/1.jpg" alt="Face 1">
 							</div>
 							<div class="ms-3 name">
-								<h5 class="font-bold"><?php echo $_SESSION["nombre_usuario"]; ?></h5>
-								<h6 class="text-muted mb-0">@johnducky</h6>
+								<h5 class="font-bold">Danny Sinoé Velásquez Cadenas</h5>
+								<h6 class="text-muted mb-0">@sinoe9891</h6>
 							</div>
 						</div>
 					</div>

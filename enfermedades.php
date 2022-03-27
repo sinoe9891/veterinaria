@@ -17,7 +17,7 @@ include 'includes/templates/sidebar.php';
 		<div class="page-title">
 			<div class="row">
 				<div class="col-12 col-md-6 order-md-1 order-last">
-					<h3>Dueños</h3>
+					<h3>Enfermedades</h3>
 				</div>
 				<div class="col-12 col-md-6 order-md-2 order-first">
 					<nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
@@ -29,7 +29,7 @@ include 'includes/templates/sidebar.php';
 				</div>
 			</div>
 		</div>
-		<section class="section duenos">
+		<section class="section enfermedad">
 			<div class="card">
 				<div class="card-body">
 					<div>
@@ -42,29 +42,31 @@ include 'includes/templates/sidebar.php';
 						<thead>
 							<tr>
 								<th>No.</th>
-								<th>Nombre Dueño</th>
-								<th>Dirección</th>
-								<th>Teléfonos</th>
+								<th>Código</th>
+								<th>Nombre Enfermedad</th>
+								<th>Descripción</th>
+								<th>Medicina</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
 
 							<?php
-							$query = obtenerDueno();
+							$query = obtenerEnfermedades();
 							// $consulta = $conn->query("SELECT * FROM ficha_directorio ORDER BY fecha_solicitud DESC, hora_solicitud ASC");
 							$numero = 1;
 							include 'includes/conexion.php';
 							//eliminar y modificar la informacion del paciente
 							while ($row = oci_fetch_array($query, OCI_ASSOC + OCI_RETURN_NULLS)) {
 							?>
-								<tr id="solicitud:<?php echo $row['ID_DUENO'] ?>">
+								<tr id="solicitud:<?php echo $row['COD_ENFERMEDAD'] ?>">
 									<td><?php echo $numero++ ?></td>
-									<td><?php echo $row['NOMBRE_COMPLETO'] ?></td>
-									<td><?php echo $row['DIRECCION'] ?></td>
-									<td><?php echo $row['TELEFONOS'].', '. $row['TELEFONOS2'] ?></td>
+									<td><?php echo $row['COD_ENFERMEDAD'] ?></td>
+									<td><?php echo $row['NOMBRE_ENFERMEDAD'] ?></td>
+									<td><?php echo $row['DESCRIPCION_ENFERMEDAD'] ?></td>
+									<td><?php echo $row['COD_MEDICINA'] ?></td>
 									<td>
-										<a href="edit-dueno.php?ID=<?php echo $row['ID_DUENO'] ?>" target="_self"><span class="badge bg-primary">Editar</span></a>
+										<a href="edit-enfermedad.php?ID=<?php echo $row['COD_ENFERMEDAD'] ?>" target="_self"><span class="badge bg-primary">Editar</span></a>
 										<i class="fas fa-trash"></i>
 									</td>
 								</tr>
@@ -75,7 +77,7 @@ include 'includes/templates/sidebar.php';
 							?>
 						</tbody>
 					</table>
-					<a href="new-dueno.php" class="btn btn-primary">Nuevo Cliente</a>
+					<a href="new-enfermedad.php" class="btn btn-primary">Ingresar Enfermedad</a>
 				</div>
 			</div>
 		</section>

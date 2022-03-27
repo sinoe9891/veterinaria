@@ -142,10 +142,11 @@ if ($accion === 'solicitudDueno') {
 	$nombre_completo = $_POST['nombre_completo'];
 	$direcciondueno = $_POST['direcciondueno'];
 	$telefonos = $_POST['telefonos'];
+	$telefono1 = $_POST['telefono1'];
 	$accion = $_POST['accion'];
 
 
-	$query = oci_parse($conexion, "INSERT INTO DUENO VALUES ('$codigoDueno', '$nombre_completo', '$direcciondueno', '$telefonos')");
+	$query = oci_parse($conexion, "INSERT INTO DUENO VALUES ('$codigoDueno', '$nombre_completo', '$direcciondueno', '$telefonos', '$telefono1')");
 	oci_execute($query);
 	// $query = oci_parse($conexion, "INSERT INTO MEDICO VALUES ('$codigopaciente', '$nombre', '$raza', '$dueno', '$medicocabecera', '$archivoimagen', to_date('$fecha_inicial', 'dd-MON-rr'))");
 	//imprimir variables
@@ -209,8 +210,110 @@ if ($accion === 'nuevaCirugia') {
 	echo json_encode($respuesta);
 	oci_close($conexion);
 }
+if ($accion === 'nuevaCita') {
+	$id_cita = $_POST['id_cita'];
+	$hora_cita = $_POST['hora_cita'];
+	$fecha_cita = $_POST['fecha_cita'];
+	$fecha_cita = date("d-M-Y", strtotime($fecha_cita));
+	
+	$paciente = $_POST['paciente'];
+	$cirugia = $_POST['cirugia'];
+	$medico = $_POST['medico'];
+	$fechaprogramo = $_POST['fechaprogramo'];
+	$fechaprogramo = date("d-M-Y", strtotime($fechaprogramo));
+	$dueno = $_POST['dueno'];
+	$descripcion = $_POST['descripcion'];
+	$accion = $_POST['accion'];
+	$usuario = 'SINOE9891';
+	
+	$query = oci_parse($conexion, "INSERT INTO CITA VALUES ('$id_cita', to_date('$fecha_cita', 'dd-MON-rr'), '$hora_cita', '$paciente', '$descripcion', '$cirugia', '$medico', to_date('$fechaprogramo', 'dd-MON-rr'), '$usuario')");
+	oci_execute($query);
+	
+	// $query = "BEGIN PAX_IN ('$codigopaciente', '$nombre', '$raza', '$dueno', '$medicocabecera', '$archivoimagen', to_date('$fecha_inicial', 'rr-mm-dd')); END;";
+	// $stmt = oci_parse($conexion, $query);
+	// oci_execute($stmt);
 
+	//saber si se inserto validar la consulta
+	$solicitud = oci_num_rows($query);
+	//enviar por metodo ajax por medio de array se puede enviar varios datos
+	if ($solicitud > 0) {
+		$respuesta = array(
+			'solicitud' => $solicitud,
+			'respuesta' => 'correcto',
+			'tipo' => $accion,
+		);
+	} else {
+		echo $respuesta = array(
+			'solicitud' => $solicitud,
+			'respuesta' => 'error',
+			'tipo' => $accion,
+		);
+	}
+	echo json_encode($respuesta);
+	oci_close($conexion);
+}
 
+if ($accion === 'solicitudEnfermedad') {
+
+	$codigoenfermedad = $_POST['codigoenfermedad'];
+	$nombre_completo = $_POST['nombre_completo'];
+	$medicina = $_POST['medicina'];
+	$descripcion = $_POST['descripcion'];
+	$accion = $_POST['accion'];
+	
+	$query = "BEGIN ENFERMEDADES_IN ('$codigoenfermedad', '$nombre_completo', '$descripcion', '$medicina'); END;";
+	$stmt = oci_parse($conexion, $query);
+	oci_execute($stmt);
+
+	//imprimir variables
+	$solicitud = oci_num_rows($stmt);
+	if ($solicitud > 0) {
+		$respuesta = array(
+			'solicitud' => $solicitud,
+			'respuesta' => 'correcto',
+			'tipo' => $accion,
+		);
+	} else {
+		echo $respuesta = array(
+			'solicitud' => $solicitud,
+			'respuesta' => 'error',
+			'tipo' => $accion,
+		);
+	}
+	echo json_encode($respuesta);
+	oci_close($conexion);
+}
+
+if ($accion === 'nuevoTurno') {
+	
+	$id_turno = $_POST['cod_turno'];
+	$medico = $_POST['medico'];
+	$fecha_turno = $_POST['fecha_turno'];
+	$fecha_turno = date("d-M-Y", strtotime($fecha_turno));
+	$accion = $_POST['accion'];
+	
+	$query = "BEGIN TURNO_MEDICO_IN ('$id_turno', '$medico', '$fecha_turno'); END;";
+	$stmt = oci_parse($conexion, $query);
+	oci_execute($stmt);
+
+	//imprimir variables
+	$solicitud = oci_num_rows($stmt);
+	if ($solicitud > 0) {
+		$respuesta = array(
+			'solicitud' => $solicitud,
+			'respuesta' => 'correcto',
+			'tipo' => $accion,
+		);
+	} else {
+		echo $respuesta = array(
+			'solicitud' => $solicitud,
+			'respuesta' => 'error',
+			'tipo' => $accion,
+		);
+	}
+	echo json_encode($respuesta);
+	oci_close($conexion);
+}
 
 
 

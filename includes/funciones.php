@@ -84,7 +84,7 @@ function obtenerDueno()
 function obtenerCitas()
 {
 	include 'conexion.php';
-	$query = oci_parse($conexion, "SELECT * FROM CITA ORDER BY FECHA_CITA");
+	$query = oci_parse($conexion, "SELECT DISTINCT * FROM CITA a, PACIENTE b, CIRUGIA c, MEDICO d WHERE A.COD_PACIENTE = b.COD_PACIENTE and a.COD_CIRUGIA = c.COD_CIRUGIA and d.ID_MEDICO = a.ID_MEDICO ORDER BY a.FECHA_CITA");
 	oci_execute($query);
 	return $query;
 }
@@ -99,6 +99,57 @@ function obtenerRiesgo()
 {
 	include 'conexion.php';
 	$query = oci_parse($conexion, "SELECT * FROM RIESGO ORDER BY NIVEL");
+	oci_execute($query);
+	return $query;
+}
+function obtenerUsuario()
+{
+	include 'conexion.php';
+	$query = oci_parse($conexion, "SELECT * FROM USUARIO ORDER BY USARIO");
+	oci_execute($query);
+	return $query;
+}
+function obtenerEnfermedades()
+{
+	include 'conexion.php';
+	$query = oci_parse($conexion, "SELECT * FROM ENFERMEDADES ORDER BY NOMBRE_ENFERMEDAD");
+	oci_execute($query);
+	return $query;
+}
+function obtenerEnfermedadesId($id)
+{
+	include 'conexion.php';
+	$query = oci_parse($conexion, "SELECT * FROM ENFERMEDADES WHERE COD_ENFERMEDAD = '$id'");
+	oci_execute($query);
+	return $query;
+}
+function obtenerTurnos()
+{
+	include 'conexion.php';
+	$query = oci_parse($conexion, "SELECT DISTINCT * FROM TURNO_MEDICO a, MEDICO b WHERE a.ID_MEDICO = b.ID_MEDICO ORDER BY a.FECHA_TURNO");
+	oci_execute($query);
+	return $query;
+}
+function obtenerTurnosId($id)
+{
+	include 'conexion.php';
+	$query = oci_parse($conexion, "SELECT * FROM TURNO_MEDICO a, MEDICO b WHERE a.ID_MEDICO = b.ID_MEDICO AND a.COD_TURNO = '$id' ORDER BY a.FECHA_TURNO");
+	oci_execute($query);
+	return $query;
+}
+
+function obtenerMedicina()
+{
+	include 'conexion.php';
+	$query = oci_parse($conexion, "SELECT * FROM MEDICINA");
+	oci_execute($query);
+	return $query;
+}
+
+function obtenerReporte()
+{
+	include 'conexion.php';
+	$query = oci_parse($conexion, "SELECT * FROM MEDICINA");
 	oci_execute($query);
 	return $query;
 }

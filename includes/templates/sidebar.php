@@ -40,20 +40,20 @@
 				} else {
 					$citas = '';
 				}
-				if (obtenerPaginaActual() == 'ventas' || obtenerPaginaActual() == 'edit-venta' || obtenerPaginaActual() == 'new-venta') {
-					$soporte = 'active';
+				if (obtenerPaginaActual() == 'turnos' || obtenerPaginaActual() == 'edit-turno' || obtenerPaginaActual() == 'new-turno') {
+					$turnos = 'active';
 				} else {
-					$soporte = '';
+					$turnos = '';
 				}
 				if (obtenerPaginaActual() == 'cirugias' || obtenerPaginaActual() == 'cobro_cuota' || obtenerPaginaActual() == 'cronograma') {
 					$cirugias = 'active';
 				} else {
 					$cirugias = '';
 				}
-				if (obtenerPaginaActual() == 'cobros' || obtenerPaginaActual() == 'new-cobro') {
-					$cobros = 'active';
+				if (obtenerPaginaActual() == 'enfermedades' || obtenerPaginaActual() == 'new-enfermedad' || obtenerPaginaActual() == 'edit-enfermedad') {
+					$enfermedades = 'active';
 				} else {
-					$cobros = '';
+					$enfermedades = '';
 				}
 				?>
 				<div class="sidebar-menu">
@@ -84,25 +84,22 @@
 								<li class="submenu-item <?php echo $cirugias ?>">
 									<a href="cirugias.php">Cirugias</a>
 								</li>
-								<li class="submenu-item <?php echo $cobros ?>">
-									<a href="cobros.php">Cobros</a>
-								</li>
-								<li class="submenu-item ">
-									<a href="#">Cotizaciones</a>
-								</li>
-								<li class="submenu-item ">
-									<a href="#">Reservas</a>
-								</li>
 							</ul>
 						</li>
-						<li class="sidebar-item  has-sub <?php echo $medicos . $lotes ?>">
+						<li class="sidebar-item  has-sub <?php echo $medicos . $lotes . $enfermedades . $turnos ?>">
 							<a href="#" class='sidebar-link'>
 								<i class="bi bi-stack"></i>
 								<span>Control Interno</span>
 							</a>
-							<ul class="submenu <?php echo $medicos . $lotes ?>">
+							<ul class="submenu <?php echo $medicos . $lotes . $enfermedades . $turnos ?>">
 								<li class="submenu-item <?php echo $medicos ?>">
 									<a href="medicos.php">Médicos</a>
+								</li>
+								<li class="submenu-item <?php echo $enfermedades ?>">
+									<a href="enfermedades.php">Enfermedades</a>
+								</li>
+								<li class="submenu-item <?php echo $turnos ?>">
+									<a href="turnos.php">Turnos</a>
 								</li>
 								<li class="submenu-item <?php echo $lotes ?>">
 									<a href="razas.php">Razas</a>

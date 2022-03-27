@@ -21,7 +21,7 @@ include 'includes/templates/sidebar.php';
 		<div class="page-title">
 			<div class="row">
 				<div class="col-12 col-md-6 order-md-1 order-last">
-					<h3>Pacientes</h3>
+					<h3>Enfermedad</h3>
 				</div>
 				<div class="col-12 col-md-6 order-md-2 order-first">
 					<nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
@@ -36,10 +36,10 @@ include 'includes/templates/sidebar.php';
 		<section class="section">
 			<div class="card">
 				<div class="card-header">
-					<h5 class="card-title">Nuevo Dueño</h5>
+					<h5 class="card-title">Nueva Enfermedad</h5>
 				</div>
 				<div class="card-body">
-				<div>
+					<div>
 						<?php
 						$DateAndTime = date('d-m-Y', time());
 						echo '<p>Hoy es: <strong>' . $DateAndTime . ' <span id="relojnumerico" onload"cargarReloj()"></span></p></strong>';
@@ -50,7 +50,7 @@ include 'includes/templates/sidebar.php';
 							<a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Información</a>
 						</li>
 					</ul>
-					<form class="form" id="nuevoDueno" method="post" enctype="multipart/form-data">
+					<form class="form" id="nuevoEnfermedad" method="post" enctype="multipart/form-data">
 						<div class="tab-content" id="myTabContent">
 							<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 								<div class="card">
@@ -59,34 +59,40 @@ include 'includes/templates/sidebar.php';
 											<div class="row">
 												<div class="col-md-6 col-12">
 													<div class="form-group">
-														<label for="first-name-column">ID Dueño</label>
-														<input type="number" class="form-control" id="codigoDueno" name="codigoDueno" min="00001" max="99999" placeholder="00001">
+														<label for="first-name-column">Código</label>
+														<input type="text" class="form-control" id="codigoenfermedad" name="codigoenfermedad" min="00001" max="99999" placeholder="00001">
 													</div>
 												</div>
 												<div class="col-md-6 col-12">
 													<div class="form-group">
-														<label for="first-name-column">Nombre Completo</label>
-														<input type="hidden" id="fechaSolicitud" name="fechaSolicitud" value="<?php echo date('Y-m-d'); ?>">
-														<input type="hidden" id="horaSolicitud" name="horaSolicitud" value="<?php echo date('H:i:s'); ?>">
-														<input type="text" class="form-control" id="nombre_completo" name="nombre_completo" placeholder="Nombre completo">
+														<label for="first-name-column">Nombre Enfermedad</label>
+														<input type="text" class="form-control" id="nombre_completo" name="nombre_completo" placeholder="">
 													</div>
 												</div>
 												<div class="col-md-6 col-12">
 													<div class="form-group">
-														<label for="first-name-column">Dirección</label>
-														<input type="text" class="form-control" id="direcciondueno" name="direcciondueno" Placeholder="Col. La Pradera">
+														<label for="first-name-column">Medicina</label>
+														<select class="choices form-select" id="medicina" name="medicina">
+															<option value="">Seleccionar Médico</option>
+															<?php
+															$query = obtenerMedicina();
+															// $consulta = $conn->query("SELECT * FROM ficha_directorio ORDER BY fecha_solicitud DESC, hora_solicitud ASC");
+															include 'includes/conexion.php';
+															//eliminar y modificar la informacion del medico
+															while ($row = oci_fetch_array($query, OCI_ASSOC + OCI_RETURN_NULLS)) {
+																$id_medicina = $row['COD_MEDICINA'];
+																$nombremedicina = $row['NOMBRE_MEDICINA'];
+																echo '<option name="medicina" value="' . $id_medicina . '">' . $nombremedicina . '</option>';
+															}
+															oci_close($conexion);
+															?>
+														</select>
 													</div>
 												</div>
 												<div class="col-md-6 col-12">
 													<div class="form-group">
-														<label for="first-name-column">Teléfono 1</label>
-														<input type="text" class="form-control" id="telefonos" name="telefonos" Placeholder="+50494500122">
-													</div>
-												</div>
-												<div class="col-md-6 col-12">
-													<div class="form-group">
-														<label for="first-name-column">Teléfono 2</label>
-														<input type="text" class="form-control" id="telefono1" name="telefono1" Placeholder="+50494500122">
+														<label for="first-name-column">Descripción</label>
+														<textarea class="form-control" name="descripcion" id="descripcion" cols="30" rows="5"></textarea>
 													</div>
 												</div>
 											</div>
@@ -95,9 +101,9 @@ include 'includes/templates/sidebar.php';
 								</div>
 							</div>
 							<div class="col-12 d-flex justify-content-end">
-								<input type="hidden" class="btn btn-primary me-1 mb-1" id="tipo" value="solicitudDueno">
+								<input type="hidden" class="btn btn-primary me-1 mb-1" id="tipo" value="solicitudEnfermedad">
 								<input class="btn btn-primary me-1 mb-1" type="submit" value="Crear Dueño" name="crear">
-								<a href="pacientes.php">
+								<a href="enfermedades.php">
 									<div class="btn btn-light-secondary me-1 mb-1">Regresar</div>
 								</a>
 							</div>

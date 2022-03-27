@@ -44,16 +44,12 @@ if ($accion === 'eliminar-medico') {
 	include '../conexion.php';
 
 	// Realizar la consulta a la base de datos
-	$query = oci_parse($conexion, "DELETE FROM MEDICO WHERE ID_MEDICO = '$id_solicitud'");
-	oci_execute($query);
-
-	// $query = "BEGIN PAX_DEL ('$id_solicitud'); END;";
-	// $stmt = oci_parse($conexion, $query);
-	// oci_execute($stmt);
+	$query = "BEGIN MEDICO_DEL ('$id_solicitud'); END;";
+	$stmt = oci_parse($conexion, $query);
+	oci_execute($stmt);
 
 	//imprimir variables
-	$solicitud = oci_num_rows($query);
-	//enviar por metodo ajax por medio de array se puede enviar varios datos
+	$solicitud = oci_num_rows($stmt);
 	if ($solicitud > 0) {
 		$respuesta = array(
 			'solicitud' => $solicitud,
@@ -78,16 +74,12 @@ if ($accion === 'eliminar-dueno') {
 	include '../conexion.php';
 
 	// Realizar la consulta a la base de datos
-	$query = oci_parse($conexion, "DELETE FROM DUENO WHERE ID_DUENO = '$id_solicitud'");
-	oci_execute($query);
-
-	// $query = "BEGIN PAX_DEL ('$id_solicitud'); END;";
-	// $stmt = oci_parse($conexion, $query);
-	// oci_execute($stmt);
+	$query = "BEGIN DUENO_DEL ('$id_solicitud'); END;";
+	$stmt = oci_parse($conexion, $query);
+	oci_execute($stmt);
 
 	//imprimir variables
-	$solicitud = oci_num_rows($query);
-	//enviar por metodo ajax por medio de array se puede enviar varios datos
+	$solicitud = oci_num_rows($stmt);
 	if ($solicitud > 0) {
 		$respuesta = array(
 			'solicitud' => $solicitud,
@@ -110,7 +102,35 @@ if ($accion === 'eliminar-cirugia') {
 	include '../conexion.php';
 
 	// Realizar la consulta a la base de datos
-	$query = oci_parse($conexion, "DELETE FROM CIRUGIA WHERE COD_CIRUGIA = '$id_solicitud'");
+	$query = "BEGIN CIRUGIA_DEL ('$id_solicitud'); END;";
+	$stmt = oci_parse($conexion, $query);
+	oci_execute($stmt);
+
+	//imprimir variables
+	$solicitud = oci_num_rows($stmt);
+	if ($solicitud > 0) {
+		$respuesta = array(
+			'solicitud' => $solicitud,
+			'respuesta' => 'correcto',
+			'tipo' => $accion,
+		);
+	} else {
+		echo $respuesta = array(
+			'solicitud' => $solicitud,
+			'respuesta' => 'error',
+			'tipo' => $accion,
+		);
+	}
+	echo json_encode($respuesta);
+	oci_close($conexion);
+}
+
+if ($accion === 'eliminar-cita') {
+	// importar la conexion
+	include '../conexion.php';
+
+	// Realizar la consulta a la base de datos
+	$query = oci_parse($conexion, "DELETE FROM CITA WHERE NUM_CITA = '$id_solicitud'");
 	oci_execute($query);
 
 	$solicitud = oci_num_rows($query);
@@ -131,6 +151,45 @@ if ($accion === 'eliminar-cirugia') {
 	echo json_encode($respuesta);
 	oci_close($conexion);
 }
+
+//codigo eliminar solicitud
+if ($accion === 'eliminar-enfermedad') {
+	// importar la conexion
+	include '../conexion.php';
+
+	// Realizar la consulta a la base de datos
+	// $query = oci_parse($conexion, "DELETE FROM PACIENTE WHERE COD_PACIENTE = '$id_solicitud'");
+	// oci_execute($query);
+
+	$query = "BEGIN ENFERMEDADES_DEL ('$id_solicitud'); END;";
+	$stmt = oci_parse($conexion, $query);
+	oci_execute($stmt);
+
+	//imprimir variables
+	$solicitud = oci_num_rows($stmt);
+	if ($solicitud > 0) {
+		$respuesta = array(
+			'solicitud' => $solicitud,
+			'respuesta' => 'correcto',
+			'tipo' => $accion,
+		);
+	} else {
+		echo $respuesta = array(
+			'solicitud' => $solicitud,
+			'respuesta' => 'error',
+			'tipo' => $accion,
+		);
+	}
+	echo json_encode($respuesta);
+	oci_close($conexion);
+}
+
+
+
+
+
+
+
 
 
 
